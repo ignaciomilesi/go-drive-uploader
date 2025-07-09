@@ -9,7 +9,7 @@ import (
 	"google.golang.org/api/googleapi"
 )
 
-func uploadFile(service *drive.Service, filePath string) (*drive.File, error) {
+func UploadFile(service *drive.Service, filePath string) (*drive.File, error) {
 	// Abre el archivo local
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -39,7 +39,7 @@ func uploadFile(service *drive.Service, filePath string) (*drive.File, error) {
 	return createdFile, nil
 }
 
-func listFiles(service *drive.Service) {
+func ListFiles(service *drive.Service) {
 	// Solicitar los primeros 10 archivos
 	files, err := service.Files.List().PageSize(10).Fields("files(id, name)").Do()
 	if err != nil {

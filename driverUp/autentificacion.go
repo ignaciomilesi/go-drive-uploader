@@ -21,22 +21,22 @@ var scopes = []string{
 	drive.DriveFileScope, //acceso a los archivos creados o modificados por la aplicación
 }
 
-func Autentificacion() {
+func Autentificacion() *drive.Service {
 	ctx := context.Background() //manejar la cancelación, los tiempos de espera (timeouts), y los valores asociados a las solicitudes
 
-	// Cargar las credenciales del archivo
+	// Carga las credenciales del archivo
 	b, err := os.ReadFile(credentialsFile)
 	if err != nil {
 		log.Fatalf("No se pudo leer credentials.json: %v", err)
 	}
 
-	// Crear el cliente de autenticación
+	// Crea el cliente de autenticación
 	config, err := google.ConfigFromJSON(b, scopes...)
 	if err != nil {
 		log.Fatalf("No se pudo parsear credentials: %v", err)
 	}
 
-	// Verificar si tenemos un token guardado
+	// Verifica si tenemos un token guardado
 	token, err := getTokenFromFile(tokenFile)
 	if err != nil {
 		// Si no tenemos token, hacer la autenticación con OAuth
@@ -44,17 +44,18 @@ func Autentificacion() {
 		saveToken(tokenFile, token)
 	}
 
-	// Crear el cliente con el token de acceso
+	// Crea el cliente con el token de acceso
 	client := config.Client(ctx, token)
 
-	// Crear el servicio de Google Drive
+	// Crea el servicio de Google Drive
 	service, err := drive.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
 		log.Fatalf("Unable to create Drive service: %v", err)
 	}
 
-	// Ahora puedes usar el servicio para interactuar con Google Drive
-	listFiles(service)
+	fmt.Println("Servicio generado")
+	// devolvemos servicio para interactuar con Google Drive
+	return service
 }
 
 func getTokenFromFile(file string) (*oauth2.Token, error) {
