@@ -1,6 +1,6 @@
 package main
 
-import "go-drive-uploader/driverUp"
+import "github.com/ignaciomilesi/go-drive-uploader/services/driverUp"
 
 func main() {
 	service := driverUp.Autentificacion()
